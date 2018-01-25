@@ -41,7 +41,7 @@ The rows will have the following columns, some of which may be empty:
 
 ### Prior art / Caveats
 
-`mbox-tools` would not be possible without Martin Rusev's [`mailbox`/`imbox` package](https://github.com/martinrusev). Though `mailbox` appears to have been succeeded by the refactored `imbox` (which appears to focus more on IMAP/SMTP support, and less on parsing `.mbox` files), the earlier library does much of the heavy lifting to turn `.mbox` files into cleanly-formatted Python objects.
+`mbox-tools` would not be possible without Martin Rusev's [`mailbox`/`imbox` package](https://github.com/martinrusev/imbox/). Though `mailbox` appears to have been succeeded by the refactored `imbox` (which appears to focus more on IMAP/SMTP support, and less on parsing `.mbox` files), the earlier library does much of the heavy lifting to turn `.mbox` files into cleanly-formatted Python objects.
 
 Because of this, it may be useful to replicate this parsing within this library in the future — whether through parsing Rusev's existing logic (should we get permission, of course) or creating our own.
 
