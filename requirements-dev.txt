@@ -1,0 +1,5 @@
+ipython~=6.2.1
+pip-tools~=1.11.0
+twine~=1.9.1
+wheel~=0.30.0
+-r requirements.txt
