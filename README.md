@@ -2,6 +2,8 @@
 
 #### _Simple tools for summarizing .mbox email archives._
 
+[![PyPI version](https://badge.fury.io/py/mbox-tools.svg)](https://badge.fury.io/py/mbox-tools)
+
 **`mbox-tools`** is a small collection of Python scripts to see  [`.mbox`](https://en.wikipedia.org/wiki/Mbox) files (which contain collections of email messages).
 
 For now, it contains a single command, which transforms `.mbox` files into `.csv` digests (where each row represents a single message, and rows include basic information about an email — including its body content and a list of attachment filenames).
