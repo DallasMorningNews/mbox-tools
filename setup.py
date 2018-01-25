@@ -6,7 +6,7 @@ from setuptools import setup
 
 REPO_URL = 'https://github.com/DallasMorningNews/mbox-tools/'
 
-PYPI_VERSION = '0.2.0'
+PYPI_VERSION = '0.3.0'
 
 DESCRIPTION = 'Simple tools for summarizing .mbox email archives.'
 
