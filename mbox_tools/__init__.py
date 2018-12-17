@@ -58,7 +58,7 @@ def generate_csv_digest(source_file, output_file):
         fmt_message['body'] = ' --- MESSAGE PAYLOAD PART BOUNDARY --- '.join([
             item.get_payload() for item in message.get_payload()
             if item.get_content_type() == 'text/plain'
-        ])
+        ]) if message.is_multipart() else message.get_payload().strip()
 
         fmt_message['attachments'] = '  //  '.join([
             item['Content-Disposition'].split('filename=')[1].strip('"')
@@ -67,7 +67,7 @@ def generate_csv_digest(source_file, output_file):
                 'text/plain',
                 'message/rfc822',
             ]
-        ])
+        ]) if message.is_multipart() else ''
 
         formatted_messages.append(fmt_message)
 
