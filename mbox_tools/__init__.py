@@ -9,7 +9,7 @@ import mailbox
 EXPORT_FIELD_NAMES = [
     'from', 'to', 'cc', 'date', 'subject',
     'body', 'attachments',
-    'priority', 'importance', 'sensitivity',
+    'priority', 'importance', 'sensitivity', 'msg_size'
 ]
 
 
@@ -40,6 +40,10 @@ def generate_csv_digest(source_file, output_file):
         fmt_message['priority'] = message.get('Priority')
         fmt_message['importance'] = message.get('Importance')
         fmt_message['sensitivity'] = message.get('Sensitivity')
+        try:
+            fmt_message['msg_size'] = len(message.as_string())
+        except KeyError:
+            fmt_message['msg_size'] = 0
 
         fmt_message['body'] = ' --- MESSAGE PAYLOAD PART BOUNDARY --- '.join([
             item.get_payload() for item in message.get_payload()
