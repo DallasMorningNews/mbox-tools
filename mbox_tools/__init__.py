@@ -21,11 +21,10 @@ def generate_csv_digest(source_file, output_file):
     were sent as attachments.
     """
     all_mail = mailbox.mbox(source_file)
-    messages = [_ for _ in all_mail]
 
     formatted_messages = []
 
-    for message in messages:
+    for message in all_mail:
         fmt_message = {
             'from': message['From'],
             'to': message['To'],
