@@ -9,7 +9,7 @@ import mailbox
 EXPORT_FIELD_NAMES = [
     'from', 'to', 'cc', 'date', 'subject',
     'body', 'attachments',
-    'priority', 'importance', 'sensitivity',
+    'priority', 'importance', 'sensitivity', 'msg_size'
 ]
 
 
@@ -21,11 +21,10 @@ def generate_csv_digest(source_file, output_file):
     were sent as attachments.
     """
     all_mail = mailbox.mbox(source_file)
-    messages = [_ for _ in all_mail]
 
     formatted_messages = []
 
-    for message in messages:
+    for message in all_mail:
         fmt_message = {
             'from': message['From'],
             'to': message['To'],
@@ -34,40 +33,28 @@ def generate_csv_digest(source_file, output_file):
         }
 
         if 'cc' in message.keys():
-            fmt_message['cc'] = message['cc']
-        elif 'Cc' in message.keys():
-            fmt_message['cc'] = message['Cc']
+            fmt_message['cc'] = message.get('cc')
         else:
-            fmt_message['cc'] = None
+            fmt_message['cc'] = message.get('Cc')
 
-        if 'Priority' in message.keys():
-            fmt_message['priority'] = message['Priority']
-        else:
-            fmt_message['priority'] = None
-
-        if 'Importance' in message.keys():
-            fmt_message['importance'] = message['Importance']
-        else:
-            fmt_message['importance'] = None
-
-        if 'Sensitivity' in message.keys():
-            fmt_message['sensitivity'] = message['Sensitivity']
-        else:
-            fmt_message['sensitivity'] = None
+        fmt_message['priority'] = message.get('Priority')
+        fmt_message['importance'] = message.get('Importance')
+        fmt_message['sensitivity'] = message.get('Sensitivity')
+        try:
+            fmt_message['msg_size'] = len(message.as_string())
+        except KeyError:
+            fmt_message['msg_size'] = 0
 
         fmt_message['body'] = ' --- MESSAGE PAYLOAD PART BOUNDARY --- '.join([
             item.get_payload() for item in message.get_payload()
             if item.get_content_type() == 'text/plain'
-        ])
+        ]) if message.is_multipart() else message.get_payload().strip()
 
-        fmt_message['attachments'] = '  //  '.join([
-            item['Content-Disposition'].split('filename=')[1].strip('"')
-            for item in message.get_payload()
-            if item.get_content_type() not in [
-                'text/plain',
-                'message/rfc822',
-            ]
-        ])
+        fmt_message['attachments'] = ''
+        if message.is_multipart():
+            filenames = [x.get_filename() for x in message.get_payload() if x.get_filename()]
+            if filenames:
+                fmt_message['attachments'] = '  //  '.join(filenames)
 
         formatted_messages.append(fmt_message)
 
